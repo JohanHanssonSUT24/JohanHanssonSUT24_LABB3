@@ -10,7 +10,11 @@ namespace JohanHanssonSUT24_LABB3
 {
     public class Methods
     {
-        public static void ShowStudents(SchoolDbContext context)
+        private static SchoolDbContext CreateContext()
+        {
+            return new SchoolDbContext();
+        }
+        public static void ShowStudents()
         {
             Console.Clear();
             Console.WriteLine("--SHOW ALL STUDENTS--");
@@ -21,6 +25,7 @@ namespace JohanHanssonSUT24_LABB3
             Console.WriteLine("[4]Last name Descending");
             string userInput = Console.ReadLine();
 
+            using var context = CreateContext();
             IQueryable<Student> students = context.Students;
 
             switch (userInput)
@@ -48,8 +53,9 @@ namespace JohanHanssonSUT24_LABB3
             }
             Console.WriteLine();
         }
-        public static void StudentsInClass(SchoolDbContext context)
+        public static void StudentsInClass()
         {
+            using var context = CreateContext();
             var classes = context.Classes.ToList();
             Console.WriteLine("--CLASSES--");
             Console.WriteLine("Choose a class: ");
@@ -73,15 +79,16 @@ namespace JohanHanssonSUT24_LABB3
                 Console.WriteLine("Choose a class in the list.");
             }
         }
-        public static void AddMember(SchoolDbContext context)
+        public static void AddMember()
         {
-
+            
             Console.WriteLine("--ADD NEW STAFF MEMBER--");
             Console.WriteLine("Type in full name");
             string userInput = Console.ReadLine();
             Console.WriteLine("Enter occupation");
             string staffOccupation = Console.ReadLine();
 
+            using var context = CreateContext();
             var occupation = context.Occupations
                 .FirstOrDefault(o => o.OccupationName == staffOccupation);
 
@@ -93,8 +100,10 @@ namespace JohanHanssonSUT24_LABB3
             };          
             context.Staff.Add(newMember);
             context.SaveChanges();
+
+            Console.WriteLine($"{userInput} - {occupation.OccupationName}, was added to the staff.");
         }
-        public static void ShowStaff(SchoolDbContext context)
+        public static void ShowStaff()
         {
             Console.Clear();
             Console.WriteLine("--STAFF MEMBERS--");
@@ -105,6 +114,7 @@ namespace JohanHanssonSUT24_LABB3
             Console.WriteLine("[4]Occupation Descending");
             string userInput = Console.ReadLine();
 
+            using var context = CreateContext();
             IQueryable<Staff> staff = context.Staff.Include(s => s.Occupation);
 
             switch (userInput)
