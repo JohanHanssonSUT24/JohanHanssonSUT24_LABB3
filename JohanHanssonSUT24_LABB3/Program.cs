@@ -6,7 +6,6 @@ namespace JohanHanssonSUT24_LABB3
     {
         static void Main(string[] args)
         {
-            using var context = new SchoolDbContext();
             bool menuBool = true;
 
             while (menuBool)
@@ -23,16 +22,16 @@ namespace JohanHanssonSUT24_LABB3
                 switch (userInput)
                 {
                     case "1":
-                        Methods.ShowStudents(context);
+                        Methods.ShowStudents();
                         break;
                     case "2":
-                        Methods.StudentsInClass(context);
+                        Methods.StudentsInClass();
                         break;
                     case "3":
-                        Methods.AddMember(context);
+                        Methods.AddMember();
                         break;
                     case "4":
-                        Methods.ShowStaff(context);
+                        Methods.ShowStaff();
                         break;
                     case "5":
                         menuBool = false;
