@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace JohanHanssonSUT24_LABB3.Models;
-
+//Result of using scaffolding according to Database first-concept
 public partial class SchoolDbContext : DbContext
 {
     public SchoolDbContext()

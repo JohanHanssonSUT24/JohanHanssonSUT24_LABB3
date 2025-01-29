@@ -10,10 +10,12 @@ namespace JohanHanssonSUT24_LABB3
 {
     public class Methods
     {
+        //Method to create a "temporary" context
         private static SchoolDbContext CreateContext()
         {
             return new SchoolDbContext();
         }
+        //Menu
         public static void ShowStudents()
         {
             Console.Clear();
@@ -24,10 +26,12 @@ namespace JohanHanssonSUT24_LABB3
             Console.WriteLine("[3]Last name Ascending");
             Console.WriteLine("[4]Last name Descending");
             string userInput = Console.ReadLine();
-
+            //Call method for context
             using var context = CreateContext();
+            //Create IQueryable to be able to send questions to DB
             IQueryable<Student> students = context.Students;
 
+            //Menu for sorting students by name
             switch (userInput)
             {
                 case "1":
@@ -46,6 +50,7 @@ namespace JohanHanssonSUT24_LABB3
                     Console.WriteLine("Choose between 1-4");
                     break;
             }
+            //Print student name
             var student = students.ToList();
             foreach (var stud in student)
             {
@@ -53,6 +58,7 @@ namespace JohanHanssonSUT24_LABB3
             }
             Console.WriteLine();
         }
+        //Method to show students in a chosen class
         public static void StudentsInClass()
         {
             using var context = CreateContext();
@@ -68,7 +74,7 @@ namespace JohanHanssonSUT24_LABB3
             {
                 var classChoice = classes[userChoice - 1];
                 var classStudents = context.Students.Where(students => students.ClassId == classChoice.Id).ToList();
-                Console.WriteLine($"Students i choosen class: {classChoice.ClassName}");
+                Console.WriteLine($"Students in chosen class: {classChoice.ClassName}");
                 foreach (var stud in classStudents)
                 {
                     Console.WriteLine($"{stud.FirstName} {stud.LastName}");
@@ -79,32 +85,38 @@ namespace JohanHanssonSUT24_LABB3
                 Console.WriteLine("Choose a class in the list.");
             }
         }
+        //Method to add staff member
         public static void AddMember()
-        {
-            
+        { 
             Console.WriteLine("--ADD NEW STAFF MEMBER--");
             Console.WriteLine("Type in full name");
             string userInput = Console.ReadLine();
             Console.WriteLine("Enter occupation");
-            string staffOccupation = Console.ReadLine();
-
+            string staffOccupation = Console.ReadLine();          
             using var context = CreateContext();
+            //Search for first matching occupation-object
             var occupation = context.Occupations
-                .FirstOrDefault(o => o.OccupationName == staffOccupation);
-
-            var newMember = new Staff
+                .FirstOrDefault(occupation => occupation.OccupationName == staffOccupation);
+            //Adding new member to Staff
+            if (occupation == null)
             {
-                StaffName = userInput,
-                OccupationId = occupation.OccupationId
-                
-            };          
-            context.Staff.Add(newMember);
-            context.SaveChanges();
-
-            Console.WriteLine($"{userInput} - {occupation.OccupationName}, was added to the staff.");
+                Console.WriteLine("No matching occupation.");
+            }
+            else
+            {
+                var newMember = new Staff
+                {
+                    StaffName = userInput,
+                    OccupationId = occupation.OccupationId
+                };
+                context.Staff.Add(newMember);
+                context.SaveChanges();
+                Console.WriteLine($"{userInput} - {occupation.OccupationName}, was added to the staff.");
+            }  
         }
         public static void ShowStaff()
         {
+            //Menu to show and sort staff members, same function as ShowStudents-method
             Console.Clear();
             Console.WriteLine("--STAFF MEMBERS--");
             Console.WriteLine("Sort by:");
@@ -113,7 +125,6 @@ namespace JohanHanssonSUT24_LABB3
             Console.WriteLine("[3]Occupation Ascending");
             Console.WriteLine("[4]Occupation Descending");
             string userInput = Console.ReadLine();
-
             using var context = CreateContext();
             IQueryable<Staff> staff = context.Staff.Include(s => s.Occupation);
 
@@ -145,11 +156,9 @@ namespace JohanHanssonSUT24_LABB3
                 else
                 {
                     Console.WriteLine($"{staf.StaffName} - No occupation");
-                }
-                
+                }                
             }
             Console.WriteLine();
-
         }
     }
 }

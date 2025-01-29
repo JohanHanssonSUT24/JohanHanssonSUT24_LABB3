@@ -7,7 +7,7 @@ namespace JohanHanssonSUT24_LABB3
         static void Main(string[] args)
         {
             bool menuBool = true;
-
+            //Main menu
             while (menuBool)
             {
                 Console.WriteLine("--SCHOOL ADMIN MENU--");
@@ -21,22 +21,22 @@ namespace JohanHanssonSUT24_LABB3
 
                 switch (userInput)
                 {
-                    case "1":
+                    case "1": //Methods to show students
                         Methods.ShowStudents();
                         break;
-                    case "2":
+                    case "2"://Methods to show students in a chosen class
                         Methods.StudentsInClass();
                         break;
-                    case "3":
+                    case "3": //Methods to add staff members
                         Methods.AddMember();
                         break;
-                    case "4":
+                    case "4": //Methods to show all staff members
                         Methods.ShowStaff();
                         break;
                     case "5":
                         menuBool = false;
                         break;
-                    default:
+                    default: //Error-msg
                         Console.WriteLine("Choose between 1-5");
                         break;
 
