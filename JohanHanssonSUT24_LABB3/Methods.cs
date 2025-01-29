@@ -139,6 +139,7 @@ namespace JohanHanssonSUT24_LABB3
                 
             }
             Console.WriteLine();
+
         }
     }
 }
